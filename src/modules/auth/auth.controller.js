@@ -8,7 +8,7 @@ const register = async (req, res) => {
 }
 
 const verifyEmail = async(req, res) => {
-    const user = authService.verifyEmail(req.params.token);
+    const user = await authService.verifyEmail(req.params.token);
     ApiResponse.ok(res,"Email Verified Successfully")
 } 
 
@@ -41,7 +41,7 @@ catch(error){
 }
 }
 
-const refresh = async(req, res) => {
+const refreshToken = async(req, res) => {
     const {accessToken,refreshToken} = await authService.refresh(req.cookies.refreshToken);
 
     res.cookie("refreshToken", refreshToken,{
@@ -76,10 +76,7 @@ const forgotPassword = async(req, res) => {
 };
 
 const resetPassword = async(req, res) => {
-    const user = await authService.resetPassword({
-        token : req.params.token,
-        resetPassword : req.body.resetPassword,
-    });
+    const user = await authService.resetPassword(req.body);
 
     ApiResponse.ok(res, "Password Reset Successfully", user)
 };
@@ -93,7 +90,7 @@ export {
     register,
     verifyEmail,
     login,
-    refresh,
+    refreshToken,
     logout,
     forgotPassword,
     resetPassword,

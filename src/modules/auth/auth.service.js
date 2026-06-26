@@ -30,7 +30,8 @@ const register = async ({ name, email, password, role }) => {
         await sendVerificationEmail(email,rawToken)
     } catch (error) {
         await User.findByIdAndDelete(user._id); // rollback
-        throw ApiError.internal("Couldn't send verification email");
+        console.error(error);
+        throw error;
     }
 
     const userObj = user.toObject()
@@ -89,7 +90,7 @@ const login = async ({ email, password }) => {
     }
 }
 
-const refresh = async (token) => {
+const refreshToken = async (token) => {
     if (!token) throw ApiError.unauthorized('Refresh Token Not Available')
     const decoded = verifyRefreshToken(token) //Apne Kabile ko check kr rhe h ki do bacho ka chai code ka refresh token ka secret same hoga
 
@@ -123,6 +124,7 @@ const logout = async (userId) => {
 }
 
 const forgotPassword = async ({ email }) => {
+    console.log("Email from request:", email);
     const user = await User.findOne({ email })
     if (!user) throw ApiError.notfound("No account with that email")
     // const accessToken = generateAccessToken({id : user._id, role : user.role})
@@ -133,7 +135,7 @@ const forgotPassword = async ({ email }) => {
     await user.save({ validateBeforeSave: false })
 
     try {
-        await sendForgotPasswordEmail(rawToken)
+        await sendForgotPasswordEmail(email, rawToken)
     } catch (error) {
         console.error(error);
     }
@@ -153,7 +155,7 @@ const resetPassword = async ({ token, resetPassword }) => {
         throw ApiError.unauthorized("Invalid or Expired Reset Token")
     }
 
-    user.password = newPassword
+    user.password = resetPassword
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
     await user.save()
@@ -175,7 +177,7 @@ export {
     register,
     verifyEmail,
     login,
-    refresh,
+    refreshToken,
     logout,
     forgotPassword,
     resetPassword,
