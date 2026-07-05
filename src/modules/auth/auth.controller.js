@@ -86,6 +86,35 @@ const myProfile = async(req, res) => {
     ApiResponse.ok(res, "User Profile", user);
 };
 
+const uploadAvatar = async (req, res) => {
+    try {
+        const file = req.file;
+
+        if (!file) {
+            throw ApiError.badRequest(
+                "No File Uploaded. Please send file with file name 'avatar'"
+            );
+        }
+
+        const result = await authService.avatarUpload(req.user.id, file);
+
+        return ApiResponse.ok(
+            res,
+            "Avatar Uploaded Successfully",
+            {
+                avatarUrl: result.url,
+                publicId: result.fileId,
+            }
+        );
+    } catch (error) {
+        console.error("Uploading Error:", error);
+
+        return ApiError.badRequest(
+            res,
+            error.message || "Failed to upload avatar"
+        );
+    }
+};
 export {
     register,
     verifyEmail,
@@ -94,5 +123,6 @@ export {
     logout,
     forgotPassword,
     resetPassword,
-    myProfile
+    myProfile,
+    uploadAvatar
 }
