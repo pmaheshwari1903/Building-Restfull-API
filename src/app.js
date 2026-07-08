@@ -8,6 +8,7 @@ import path from 'path';
 import authRoute from './modules/auth/auth.routes.js';
 import ownerRoutes from './modules/ipl-ms/routes/owner.routes.js'
 import teamRoutes from './modules/ipl-ms/routes/team.routes.js'
+import playerRoutes from './modules/ipl-ms/routes/player.routes.js'
 
 
 const app = express()
@@ -20,6 +21,7 @@ app.use(cookieParser())
 app.use('/api/auth', authRoute)
 app.use('/api/ipl-ms/owner', ownerRoutes)
 app.use('/api/ipl-ms/team', teamRoutes)
+app.use('/api/ipl-ms/player', playerRoutes)
 
 app.all("{*path}", (req, res) => {
     throw ApiError.notfound(`Route ${req.originalUrl} not found`)
