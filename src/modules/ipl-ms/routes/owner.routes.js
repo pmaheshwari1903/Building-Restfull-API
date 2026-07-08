@@ -18,3 +18,5 @@ router.put("/:id", controller.updateOwner)
 // Delete Owner
 router.delete("/:id", controller.deleteOwner)
 
+
+export default router

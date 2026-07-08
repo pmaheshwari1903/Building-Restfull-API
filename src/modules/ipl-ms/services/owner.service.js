@@ -1,5 +1,5 @@
 import Owner from "../../ipl-ms/models/owner.model.js"
-import ApiError from "../../common/utils/api-error.js"
+import ApiError from "../../../common/utils/api-error.js"
 
 const createOwner = async ({name, company}) => {
     const owner = await Owner.create({name, company});
@@ -11,7 +11,7 @@ const getAllOwner = async () => {
     return owner
 }
 
-const getOwnerByID = async(userId) => {
+const getOwnerById = async(userId) => {
     const owner = await Owner.findById(userId);
     if(!owner) throw ApiError.notfound("Owner Not Found")
     return owner
@@ -29,7 +29,7 @@ const updateOwner = async(userId, {name, company}) => {
 }
 
 const deleteOwner = async(userId) => {
-    const owner = await Owner.deleteOwner(userId)
+    const owner = await Owner.findByIdAndDelete(userId)
     if(!owner) throw ApiError.notfound("Owner Not Found")
     return owner
 }
@@ -38,7 +38,7 @@ const deleteOwner = async(userId) => {
 export {
     createOwner,
     getAllOwner,
-    getOwnerByID,
+    getOwnerById,
     updateOwner,
     deleteOwner
 }

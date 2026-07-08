@@ -17,4 +17,4 @@ const ownerSchema = new mongoose.Schema({
     }
 },{timestamps:true});
 
-export default moongose.model("Owner", ownerSchema);
+export default mongoose.model("Owner", ownerSchema);

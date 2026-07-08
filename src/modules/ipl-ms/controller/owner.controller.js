@@ -1,6 +1,6 @@
-import * as ownerService from '../../ipl-ms/routes/owner.routes.js'
-import ApiResponse from "../../common/utils/api-response.js"
-import ApiError from "../../common/utils/api-error.js"
+import * as ownerService from '../../ipl-ms/services/owner.service.js'
+import ApiResponse from "../../../common/utils/api-response.js"
+import ApiError from "../../../common/utils/api-error.js"
 
 
 const createOwner = async(req, res) => {
@@ -14,17 +14,17 @@ const getAllOwner = async(req, res) => {
 }
 
 const getOwnerById = async(req, res) => {
-    const owner = ownerService.getOwnerById(req.params.id)
-    ApiResponse.ok(res, "Owner fetched successfully")
+    const owner = await ownerService.getOwnerById(req.params.id)
+    ApiResponse.ok(res, "Owner fetched successfully", owner)
 }
 
 const updateOwner = async(req, res) => {
-    const updatedOwner = ownerService.updateOwner(req.body.id, req.body)
-    ApiResponse.ok(res, "Owner Updated Successfully")
+    const updatedOwner = await ownerService.updateOwner(req.params.id, req.body)
+    ApiResponse.ok(res, "Owner Updated Successfully", updateOwner)
 }
 
 const deleteOwner = async(req, res) => {
-    const deletedOwner = ownerService.deleteOwner(req.body.id)
+    const deletedOwner = await ownerService.deleteOwner(req.body.id)
     ApiResponse.ok(res, "Owner Deleted Successfully")
 }
 
