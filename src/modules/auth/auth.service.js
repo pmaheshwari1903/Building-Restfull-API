@@ -1,4 +1,3 @@
-import * as controller from "./auth.controller.js"
 import User from './auth.model.js'
 import ApiError from "../../common/utils/api-error.js"
 import { generateAccessToken, generateRefreshToken, generateResetToken, verifyRefreshToken } from "../../common/utils/jwt.utils.js"
